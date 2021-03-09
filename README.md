@@ -1,2 +1,2 @@
 # Employee-Managment
-Storing the data of Employees in a file to delete, add, update the Data Provided by User
+Storing the data of Employees in a file and allow deleting, adding, updating and sorting the Data Provided by User
