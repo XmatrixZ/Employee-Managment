@@ -7,14 +7,14 @@
 #include <string.h>
 #include <ctype.h>
 using namespace std;
-class emp
+class emp // Class of for Empolyee information
 {
-  int eno;
-  char name[30];
-  char phone[15];
-  char dept[10];
-  char desig[10];
-  double salary;
+  int eno; //Employee number/id
+  char name[30]; //Name
+  char phone[15]; //Phone number
+  char dept[10]; //Department
+  char desig[10]; //Designation
+  double salary; //Salary
 
 public:
   emp();
@@ -26,7 +26,7 @@ public:
   float getsal();
   char *getname();
 };
-emp::emp()
+emp::emp() //Constructor
 {
   eno = 0;
   name[0] = '\0';
@@ -35,7 +35,7 @@ emp::emp()
   phone[0] = '\0';
   salary = 0;
 }
-emp::emp(emp &E)
+emp::emp(emp &E) //Copy constructor
 {
   eno = E.eno;
   strcpy(name, E.name);
@@ -44,7 +44,7 @@ emp::emp(emp &E)
   strcpy(phone, E.phone);
   salary = E.salary;
 }
-void emp::getdata()
+void emp::getdata() // To Get the data of the Employee
 {
   string tempname;
   cout << "\nEnter Employee number: ";
@@ -59,7 +59,7 @@ void emp::getdata()
   cout << "Enter salary:";
   cin >> salary;
 }
-void emp::putdata()
+void emp::putdata() // display data of the employee
 {
   cout << "Employee number: " << eno << endl;
   cout << "Employee name: " << name << endl;
@@ -68,23 +68,23 @@ void emp::putdata()
   cout << "Designation: " << desig << endl;
   cout << "Salary: " << salary << endl;
 }
-int emp::geteno()
+int emp::geteno() //Method to return Empolyee name/id
 {
   return (eno);
 }
-char *emp::getname()
+char *emp::getname() //Method to return Name
 {
   return (name);
 }
-char *emp::getdept()
+char *emp::getdept() //Method to return Which department
 {
   return (dept);
 }
-float emp::getsal()
+float emp::getsal() //Mathod to return salary
 {
   return (salary);
 }
-void write()
+void write() // Add records to the file
 {
   ofstream f("emp.txt", ios::binary | ios::in | ios::out | ios::trunc);
   emp E;
@@ -95,21 +95,21 @@ void write()
     f.write((char *)&E, sizeof(E));
     cout << "Enter Y to put more records: ";
     cin >> reply;
-  } while (toupper(reply) == 'Y');
+  } while (toupper(reply) == 'Y'); // Add new Records
   f.close();
 }
-void read()
+void read() //Read the Employee data from the file
 {
   ifstream f("emp.txt", ios::binary | ios::in);
   emp E;
-  if (!f)
+  if (!f)//Check if the file does not exit
   {
     cout << "file does not exit!!! ";
     getche();
     return;
   }
   int ctr = 0;
-  while (f.read((char *)&E, sizeof(E)))
+  while (f.read((char *)&E, sizeof(E))) //Read till the end of the file
   {
     cout << "Record: " << ++ctr << endl;
     E.putdata();
@@ -117,7 +117,7 @@ void read()
   }
   f.close();
 }
-void search_eno()
+void search_eno() //Search Empolyee information from the file to find the employee data with matching employee number/id
 {
   ifstream f("emp.txt", ios::binary | ios::in);
   char found = 'N';
@@ -131,9 +131,9 @@ void search_eno()
   int empno;
   cout << "Enter Employee number to be searched: ";
   cin >> empno;
-  while (f.read((char *)&e, sizeof(emp)))
+  while (f.read((char *)&e, sizeof(emp))) 
   {
-    if (e.geteno() == empno)
+    if (e.geteno() == empno) // Check if Employee Number/id matches
     {
       cout << " Information of the employee: " << endl;
       e.putdata();
@@ -141,28 +141,28 @@ void search_eno()
       break;
     }
   }
-  if (found == 'N')
+  if (found == 'N')// If the record is not found
     cout << " No such record is found";
   f.close();
 }
-void sort_eno()
+void sort_eno()// Sorting the Employee Information by employee number/id
 {
   fstream f;
   int n;
-  f.open("emp.txt", ios::binary | ios::in);
-  emp E[100];
-  if (!f)
+  f.open("emp.txt", ios::binary | ios::in);// Opening file
+  emp E[100]; //Store the Of Each Employee information
+  if (!f) //Check if the file exits
   {
     cout << "\n FILE DOES NOT EXIT!!!";
     getch();
     return;
   }
   n = 0;
-  while (f.read((char *)&E[n], sizeof(emp)))
+  while (f.read((char *)&E[n], sizeof(emp))) //Reading the file
     n++;
-  emp temp;
+  emp temp; 
   int i, j;
-  for (i = 0; i < n; i++)
+  for (i = 0; i < n; i++) // Sorting based on Employee id
   {
     for (j = i; j < n - 1; j++)
     {
@@ -174,34 +174,34 @@ void sort_eno()
       }
     }
   }
-  f.close();
-  f.open("emp.txt", ios::out | ios::binary);
+  f.close(); //Close file
+  f.open("emp.txt", ios::out | ios::binary); //Open the file 
   i = 0;
   while (i < n)
   {
-    f.write((char *)&E[i], sizeof(emp));
+    f.write((char *)&E[i], sizeof(emp)); //Writing the sorted Employee Information into the file
     i++;
   }
   cout << "\n FILE SORTED\n";
   f.close();
 }
-void sort_name()
+void sort_name() //Sorting the Employee information Alphabetical Order
 {
   fstream f;
-  f.open("emp.txt", ios::binary | ios::in | ios::out);
-  emp E[100];
-  if (!f)
+  f.open("emp.txt", ios::binary | ios::in | ios::out); //Opening the file
+  emp E[100]; //Aray to store Employee Information
+  if (!f) //Check if the file Exist
   {
     cout << "File does not exit!!!";
     getch();
     return;
   }
   int n = 0;
-  while (f.read((char *)&E[n], sizeof(E[n])))
+  while (f.read((char *)&E[n], sizeof(E[n]))) //Read the file 
     n++;
   emp temp;
   int i, j;
-  for (i = 0; i < n; i++)
+  for (i = 0; i < n; i++) //Sorting the Employee Information in Alphabetical Order
   {
     for (j = i; j < n - 1; j++)
     {
@@ -213,10 +213,10 @@ void sort_name()
       }
     }
   }
-  f.close();
-  f.open("emp.txt", ios::binary | ios::out | ios::in);
+  f.close(); //Close file
+  f.open("emp.txt", ios::binary | ios::out | ios::in);  // opening the file
   i = 0;
-  while (i < n)
+  while (i < n) //Writing the sorted Employee Information back into the file 
   {
     f.write((char *)&E[i], sizeof(emp));
     i++;
@@ -224,55 +224,62 @@ void sort_name()
   f.close();
   cout << " File sorted...\n";
 }
-void insertion()
+/*
+* Reading the file and then coping the data in a new file till the Employee object after which the Employee Information needs to be Inserted
+* Writing the new employee information the new temp file and the n copying the information the reset of the information from the main file into the new file
+* Deleting the min file and thne renaming the temprary file as the main file hence updating the file 
+* 
+* SHOULD BE DONE IN A SORTED FILE
+*/
+void insertion() // Inserting a new Employee information based on the Employee number/id
 {
-  ifstream fmain("emp.txt", ios::binary | ios::in);
-  ofstream ftemp("temp.txt", ios::binary | ios::out);
+  ifstream fmain("emp.txt", ios::binary | ios::in); //Buffer to read Employee information int the main file
+  ofstream ftemp("temp.txt", ios::binary | ios::out); //Buffer to Write new Employee information in a temp file
   emp E, ENEW;
   cout << "Enter new record information ";
   ENEW.getdata();
   char EOF_FLAG = 'Y';
-  while (fmain.read((char *)&E, sizeof(emp)))
+  while (fmain.read((char *)&E, sizeof(emp)))// read till the end of the file
   {
-    if (E.geteno() <= ENEW.geteno())
-      ftemp.write((char *)&E, sizeof(emp));
+    if (E.geteno() <= ENEW.geteno()) // check if it has reached the assigned location where the information should be inserted based on Employee number/id
+      ftemp.write((char *)&E, sizeof(emp)); //Inserting values before the New Empolyee Details
     else
     {
-      ftemp.write((char *)&ENEW, sizeof(emp));
+      ftemp.write((char *)&ENEW, sizeof(emp)); //Adding the new Empolyee information into the new File
       EOF_FLAG = 'N';
       break;
     }
   }
-  if (EOF_FLAG == 'Y')
+  if (EOF_FLAG == 'Y') // Inserting the record if it has to be placed at the end of the file
     ftemp.write((char *)&ENEW, sizeof(emp));
   else
-    while (!fmain.eof())
+    while (!fmain.eof()) //Inputing the rest of the Employee Information if the buffer has not reached the end of the file
     {
       ftemp.write((char *)&E, sizeof(emp));
       fmain.read((char *)&E, sizeof(emp));
     }
   fmain.close();
   ftemp.close();
-  remove("emp.txt");
-  rename("temp.txt", "emp.txt");
+  remove("emp.txt"); //Deleting the main file
+  rename("temp.txt", "emp.txt"); //Renaming the temp file as the main file
 }
-void modify()
+void modify() //Updating Empolyee Information 
 {
   fstream f("emp.txt", ios::binary | ios::in | ios::out);
   emp e;
   int empno;
   cout << " Enter Empno whose record to be modified: ";
   cin >> empno;
-  int rec_count = 0;
+  int rec_count = 0; 
   char found = 'N';
-  while (f.read((char *)&e, sizeof(emp)))
+  while (f.read((char *)&e, sizeof(emp)))// reading till the end of the file
   {
-    if (e.geteno() == empno)
+    if (e.geteno() == empno) // Check if the The current Employee Object has to be updated
     {
       cout << "Enter New information";
       e.getdata();
-      f.seekg(rec_count * sizeof(emp), ios::beg);
-      f.write((char *)&e, sizeof(emp));
+      f.seekg(rec_count * sizeof(emp), ios::beg);//Move the buffer at the start of the object loaction
+      f.write((char *)&e, sizeof(emp));//OverWritting the old infomation with the new information
       found = 'Y';
       break;
     }
@@ -284,10 +291,13 @@ void modify()
     cout << "record not found";
   f.close();
 }
+/* Method used to read from the main file and then copy all the Employee Information into another file.
+   This is done for all Employee objects except the one that wants to be deleted based one Employee number/id 
+*/
 void deletion()
 {
-  ifstream fmain("emp.txt", ios::binary | ios::in);
-  ofstream ftemp("temp.txt", ios::binary | ios::out);
+  ifstream fmain("emp.txt", ios::binary | ios::in); //Buffer to read the Employee Information main file
+  ofstream ftemp("temp.txt", ios::binary | ios::out);//Buffer to write the Employee Infomation in another file 
   emp E;
   int empno;
   cout << "Enter the employee number whose record has to be deleted: ";
@@ -295,7 +305,7 @@ void deletion()
   char found = 'N';
   while (fmain.read((char *)&E, sizeof(emp)))
   {
-    if (E.geteno() != empno)
+    if (E.geteno() != empno)  // Writing in new temprary file all the  Employee infomation except the Employee object that needs to be deleted
       ftemp.write((char *)&E, sizeof(emp));
     else
       found = 'Y';
@@ -304,13 +314,13 @@ void deletion()
     cout << "Record not found";
   fmain.close();
   ftemp.close();
-  remove("emp.txt");
-  rename("temp.txt", "emp.txt");
+  remove("emp.txt"); //Deleting the main file
+  rename("temp.txt", "emp.txt");//Renaming the new temprary file into the main file
 }
 int main()
 {
   int ch;
-  do
+  do 
   {
     system("CLS");
     cout << "FILE OPERATION MENU" << endl;
@@ -325,7 +335,7 @@ int main()
     cout << "8. MODIFY A RECORD FOR THE GIVEN EMPLOYEE NUMBER" << endl;
     cout << "Enter your choice: ";
     cin >> ch;
-    switch (ch)
+    switch (ch)// Options for Empoyee Manipulation
     {
     case 1:
       write();
